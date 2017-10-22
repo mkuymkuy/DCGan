@@ -12,6 +12,7 @@ z_dimension = 128
 
 lower_bound = 0.01
 upper_bound = 0.01
+
 def leaky_relu(x,alpha = 0.2):
     return tf.maximum(x, alpha * x)
 
@@ -122,6 +123,7 @@ if mode == 'vanilla':
 else:
     d_loss = tf.reduce_mean(d_output_fake - d_output_real)
     g_loss = tf.reduce_mean(-d_output_fake)
+
 d_correct_real = p_real > 0.5
 d_correct_fake = p_fake > 0.5
 
@@ -141,6 +143,7 @@ else:
     g_trainer = tf.train.RMSPropOptimizer(0.001).minimize(g_loss, var_list=gvars)
 	with tf.control_dependencies([d_trainer]):
         clip = (tf.tuple([tf.assign(var, tf.clip_by_value(var, lower_bound, upper_bound)) for var in dvars]))
+
 #provide infos for TensorBoard
 tf.get_variable_scope().reuse_variables()
 
